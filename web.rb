@@ -140,6 +140,13 @@ post '/create_payment_intent' do
   return {:intent => payment_intent.id, :secret => payment_intent.client_secret}.to_json
 end
 
+post '/process_payment_intent' do
+  id = params["payment_intent_id"]
+  log_info("PaymentProcess successfully changed: #{payment_intent.id}")
+  status 200
+  return {:intent => id, :test => "testext"}.to_json
+end
+
 # This endpoint captures a PaymentIntent.
 # https://stripe.com/docs/terminal/payments#capture
 post '/capture_payment_intent' do
