@@ -142,7 +142,7 @@ end
 
 post '/process_payment_intent' do
   id = params["payment_intent_id"]
-  log_info("PaymentProcess successfully changed: #{payment_intent.id}")
+  log_info("PaymentProcess successfully changed: #{id}")
   status 200
   return {:intent => id, :test => "testext"}.to_json
 end
