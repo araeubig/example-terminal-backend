@@ -142,9 +142,11 @@ end
 
 post '/process_payment_intent' do
   id = params["payment_intent_id"]
+  reader = params["reader_id"]
+  skip = params["skip_tipping"]
   log_info("PaymentProcess successfully changed: #{id}")
   status 200
-  return {:intent => id, :test => "testext"}.to_json
+  return {:intent => id, :reader => reader, :skip => skip}.to_json
 end
 
 # This endpoint captures a PaymentIntent.
