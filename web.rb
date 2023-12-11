@@ -147,7 +147,10 @@ post '/process_payment_intent' do
     skip = params["skip_tipping"]
     reader = Stripe::Terminal::Reader.process_payment_intent(
       readerid,
-      payment_intent: id
+      payment_intent: id,
+      process_config: {
+        skip_tipping: skip
+      },
     )
   rescue Stripe::StripeError => e
     status 400
