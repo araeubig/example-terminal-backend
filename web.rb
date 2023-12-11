@@ -141,17 +141,21 @@ post '/create_payment_intent' do
 end
 
 post '/process_payment_intent' do
-  id = params["payment_intent_id"]
-  readerid = params["reader_id"]
-  skip = params["skip_tipping"]
-  
-  reader = Stripe::Terminal::Reader.process_payment_intent(
-    readerid,
-    payment_intent: id
-  )
+  begin
+    id = params["payment_intent_id"]
+    readerid = params["reader_id"]
+    skip = params["skip_tipping"]
+    reader = Stripe::Terminal::Reader.process_payment_intent(
+      readerid,
+      payment_intent: id
+    )
+  rescue Stripe::StripeError => e
+    status 400
+    return log_info("Error capturing PaymentIntent! #{e.message}")
+  end
   # log_info("PaymentProcess successfully changed: #{id}")
   status 200
-  return {:rader_state => reader}.to_json
+  return {:reader_state => reader}.to_json
 end
 
 
