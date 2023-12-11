@@ -144,10 +144,23 @@ post '/process_payment_intent' do
   id = params["payment_intent_id"]
   reader = params["reader_id"]
   skip = params["skip_tipping"]
+  reader_updated = Stripe::Terminal::Reader.process_payment_intent(
+  reader,
+  {
+    payment_intent: id,
+    process_config: {skip_tipping: true},
+  },
+)
   log_info("PaymentProcess successfully changed: #{id}")
   status 200
   return {:intent => id, :reader => reader, :skip => skip}.to_json
 end
+
+
+
+
+
+
 
 # This endpoint captures a PaymentIntent.
 # https://stripe.com/docs/terminal/payments#capture
