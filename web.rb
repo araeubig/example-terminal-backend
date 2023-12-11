@@ -142,18 +142,16 @@ end
 
 post '/process_payment_intent' do
   id = params["payment_intent_id"]
-  reader = params["reader_id"]
+  readerid = params["reader_id"]
   skip = params["skip_tipping"]
-  reader_updated = Stripe::Terminal::Reader.process_payment_intent(
-  reader,
-  {
-    payment_intent: id,
-    process_config: {skip_tipping: true},
-  },
-)
-  log_info("PaymentProcess successfully changed: #{id}")
+  
+  reader = Stripe::Terminal::Reader.process_payment_intent(
+    readerid,
+    payment_intent: id
+  )
+  # log_info("PaymentProcess successfully changed: #{id}")
   status 200
-  return {:intent => id, :reader => reader, :skip => skip}.to_json
+  return {:rader_state => reader}.to_json
 end
 
 
